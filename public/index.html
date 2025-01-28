@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blogger Template XML Scraper</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    pre {
+      background-color: #f8f9fa;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      max-height: 400px;
+      overflow-y: auto;
+      text-align: left;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Blogger Template XML Scraper</h1>
+  <div class="container">
+    <input type="text" id="blogUrl" placeholder="Enter Blogger URL (e.g., https://example.blogspot.com)" />
+    <button onclick="scrapeTemplate()">Scrape Template XML</button>
+    <pre id="output"></pre>
+  </div>
+
+  <script>
+    async function scrapeTemplate() {
+      const blogUrl = document.getElementById('blogUrl').value.trim();
+      const output = document.getElementById('output');
+
+      if (!blogUrl) {
+        alert('Please enter a valid Blogger URL.');
+        return;
+      }
+
+      try {
+        output.textContent = 'Fetching template XML...';
+        const response = await fetch(`/scrape?url=${encodeURIComponent(blogUrl)}`);
+        const data = await response.json();
+
+        if (data.error) {
+          output.textContent = `Error: ${data.error}`;
+        } else {
+          output.textContent = data.xml;
+        }
+      } catch (error) {
+        output.textContent = `Error: ${error.message}`;
+      }
+    }
+  </script>
+</body>
+</html>
